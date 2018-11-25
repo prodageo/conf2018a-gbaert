@@ -25,7 +25,20 @@
    - 05 - Hexagonale Architecture
 
 ## Résumé
-...
+La présentation a consisté en la transformation d'une application simple (https://github.com/celinegilet/happy-town/tree/start) construite selon une architecture MVC standard en cette même application, mais avec une architecture Clean Hexagonale. 
+
+Tout d'abord, a été montré les pricipales limitations de l'architecture MVC : Au niveau des tests, il est nécessaire de connfigurer un serveur mail, ce qui rend les tests difficiles à réaliser. EN effet, la majorité des tests se trouvent au niveau des tests d'intégration, ce qui donne une mauvaise répartition des tests (l'idéal étant d'avoir une base de tests unitaires). De plus, le code métier se retrouve couplé avec des frameworks, ce qui peut poser des problèmes lors de la mise à jour de ces frameworks. 
+
+La solution présentée pour dépasser ces limitations est l'utilisation soit d'une architecture Clean, soit d'une architecture Hexagonale. Est alors présenté le passage de l'architecture MVC à l'architecture Clean (https://github.com/celinegilet/happy-town/tree/cleanArchi). Le principe est : 
+  - de nettoyer la partie modèle pour la transformer en partie entité, en supprimant les annotations et les frameworks ;  
+  - regrouper les méthodes du code métier disséminé dans la partie services dans des classes dans un package usecases ; 
+  - réaliser des interfaces d'accès aux données (data providers) , une interface par type de donnée différent, et dont l'implémentation dépendra de la manière dont sont stockées les données. Le code métier ne fera qu'appeler les méthodes décrites dans les interfaces sans se préoccuper des techniques de stockage ;
+  - Séparer le modèle : modèle métier, modèle d'accès aux données, modèle de présentation des données. Ajouter différents entrypoints qui peuvent appeler le code métier, ceci par type de données différent.
+  
+L'intérêt est de permettre, par exemple, de réaliser des tests unitaire sur le code métier en mockant facilement les données et ainsi se passer d'un serveur mail. Aussi, si le choix du stockage de données vient à changer durant la vie du projet, il suffira de changer l'implémentation du data provider associé. 
+
+Enfin, les différences entre une architecture Clean et une architecture hexagonale se résume principalement à un changement de vocabulaire.  
+
 
 ## Architecture et facteur qualité
-...
+Maintenabilité : testabilité. En effet, il devient bien plus facile de tester unitairement le code métier quand celui-ci est exempt de tout couplage avec les différentes technologies de stockage de données. Ceci permet donc d'avoir une bonne base de tests unitaires avant de se lancer dans des tests d'intégration ou des tests fonctionnels.
